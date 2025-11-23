@@ -1,0 +1,3 @@
+www-client/firefox system-png geckodriver hwaccel
+media-libs/libvpx postproc
+gui-libs/wlroots tinywl

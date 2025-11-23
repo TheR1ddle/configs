@@ -1,0 +1,52 @@
+# /etc/fstab: static file system information.
+
+#########################################################################################################################
+#   Никита Юрьевич Казаков                                                                                              #
+#   24.02.2023                                                                                                          #
+#   kazak715@yandex.ru                                                                                                  #
+#########################################################################################################################
+#   ROOT                                                                                                                #
+#=======================================================================================================================#
+UUID=766b0b08-6fa1-4068-a9c5-865286cf266c / btrfs defaults,dev,diratime,exec,iversion,mand,relatime,lazytime,suid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,ssd_spread,treelog,space_cache,subvolid=294 0 1
+#########################################################################################################################
+#   TMP                                                                                                                 #
+#=======================================================================================================================#
+UUID=766b0b08-6fa1-4068-a9c5-865286cf266c /tmp btrfs defaults,nodev,diratime,exec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,ssd_spread,treelog,space_cache,subvolid=292 0 2
+#########################################################################################################################
+#   VAR                                                                                                                 #
+#=======================================================================================================================#
+UUID=766b0b08-6fa1-4068-a9c5-865286cf266c /var btrfs defaults,nodev,diratime,exec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,ssd_spread,treelog,space_cache,subvolid=293 0 2
+#########################################################################################################################
+#   LOG                                                                                                                 #
+#=======================================================================================================================#
+UUID=766b0b08-6fa1-4068-a9c5-865286cf266c /var/log btrfs defaults,nodev,diratime,noexec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,ssd_spread,treelog,space_cache,subvolid=295 0 2
+#########################################################################################################################
+#   SWAP                                                                                                                #
+#=======================================================================================================================#
+UUID=766b0b08-6fa1-4068-a9c5-865286cf266c /swap btrfs defaults,nodev,diratime,noexec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,nodatacow,nodatasum,discard=async,fatal_errors=bug,ssd_spread,treelog,space_cache,subvolid=388 0 0
+/swap/swapfile none swap sw 0 0
+#########################################################################################################################
+#   HOME                                                                                                                #
+#=======================================================================================================================#
+UUID=f58f5ae0-e01d-4f45-b503-b1818d73f3fe /home btrfs defaults,nodev,diratime,exec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,treelog,space_cache,subvolid=259 0 2
+#########################################################################################################################
+#   DISTFILES portage                                                                                                   #
+#=======================================================================================================================#
+UUID=f58f5ae0-e01d-4f45-b503-b1818d73f3fe /var/cache/distfiles btrfs defaults,nodev,diratime,noexec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,treelog,space_cache,subvolid=257 0 2
+#########################################################################################################################
+#   BINPKGS portage                                                                                                     #
+#=======================================================================================================================#
+UUID=f58f5ae0-e01d-4f45-b503-b1818d73f3fe /var/cache/binpkgs btrfs defaults,nodev,diratime,noexec,iversion,mand,relatime,lazytime,nosuid,rw,acl,barrier,compress=lzo,datacow,datasum,discard=async,fatal_errors=bug,treelog,space_cache,subvolid=258 0 2
+#########################################################################################################################
+#   BigData                                                                                                             #
+#=======================================================================================================================#
+UUID=d085cc1b-a37d-477b-b6ea-0b70cd40664d /mnt/BigData ext4  defaults,auto,journal_checksum,i_version,owner,nomand,diratime,relatime,lazytime,nodev,nosuid,noexec,errors=remount-ro 0 2
+#########################################################################################################################
+#   NanoBrother router NAS                                                                                              #
+#=======================================================================================================================#
+//192.168.15.1/DreamDisk_WD/ /mnt/NanoBrother cifs user,nofail,owner,nomand,nodev,noexec,nosuid,diratime,relatime,lazytime,username=guest,password=,uid=1000,iocharset=utf8,_netdev 0 0
+#########################################################################################################################
+#   EFI                                                                                                                 #
+#=======================================================================================================================#
+UUID=B2E0-5833 /boot/efi vfat defaults,noauto,discard,fat=32,nodev 0 2
+#########################################################################################################################

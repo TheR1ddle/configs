@@ -1,0 +1,4 @@
+# Panasonic MFS scanners
+# https://panasonic.net/cns/pcc/support/fax/common/table/linuxdriver.html#SD
+#ATTRS{idVendor}=="04da", ENV{libsane_matched}="yes"
+ATTRS{idVendor}=="04da", ATTRS{idProduct}=="0f0b", MODE="0664", GROUP="scanner", ENV={libsane_matched}="yes"

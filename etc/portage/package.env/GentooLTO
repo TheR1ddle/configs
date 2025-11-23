@@ -1,0 +1,201 @@
+# Используются следующие фалы настроек:
+#
+# no-lto                # FLAGS="-fno-lto"
+# no-strict-aliasing    # FLAGS="-fno-strict-aliasing"
+# no-graphite           # = COMMON_FLAGS - GRPHITE
+# fat-lto               # = COMMON_FLAGS + FAT_LTO
+# lto-partition-none    # FLAGS="-flto-partition=none"
+# as-need               # FLAGS="-Wl,--as-needed"
+# no-seminterops        # = COMMON_FLAGS - SEMINTERPOS
+# no-plt                # = COMMON_FLAGS - NOPLT
+# no-ipapta             # = COMMON_FLAGS - IPAPTA
+# no-devirt             # = COMMON_FLAGS - DEVIRTLTO
+# no-ipapta-plt         # = no-ipapta + no-plt
+
+
+app-admin/keepassxc         no-lto      # segfaults on start since Qt 5.15.1
+app-cdr/cdrtools            no-lto      # SCSI buffer size 0 when attempting to burn disc, reports "Unknown error 64512"
+app-crypt/efitools          fat-lto     # textrel?
+app-crypt/gcr               no-lto      # Test failure
+#app-doc/doxygen             CMAKE_MAKEFILE_GENERATOR=emake
+app-editors/vim             fat-lto     # "has perl ${IUSE//+} && use perl && FlagAddAllFlags -ffat-lto-objects" # required for perl USE flag
+app-emulation/dosemu        no-lto      # Issue #163
+app-emulation/libguestfs    no-lto
+app-emulation/libpod        no-lto
+app-emulation/libvirt       no-ipapta   # Segmentation fault when starting libvirtd
+app-emulation/qemu          no-strict-aliasing no-lto # required to compile qemu
+app-emulation/virtualbox-extpack-oracle no-lto
+app-emulation/virtualbox    no-lto
+app-emulation/wine*         no-lto
+app-emulation/wine-staging  no-plt
+app-emulation/wine-vanilla  no-plt
+app-misc/openrgb            no-lto      # Segmentation fault on launch
+app-office/gnucash          no-lto      # error: type ‘struct _iterate’ violates the C++ One Definition Rule [-Werror=odr]
+#app-office/libreoffice      no-lto      #"has firebird ${IUSE//+} && use firebird && FlagSubAllFlags -flto*"
+app-office/scribus          no-lto      # Scribus crashes on startup if compiled with LTO
+app-text/lcdf-typetools     no-devirt   # *FLAGS-="-fdevirtualize-at-ltrans" # ICE on static-var pass
+<app-text/mupdf-1.12.0      no-lto      # Only older versions are affected
+app-text/texlive-core       no-lto
+app-text/yodl               no-lto      # Fixes build
+cross-arm-none-eabi/newlib  no-lto      # Causes 'arm-none-eabi-gcc' to segfault
+cross-i686-w64-mingw32/mingw64-runtime      no-lto # linking errors
+cross-x86_64-w64-mingw32/mingw64-runtime    no-lto # linking errors
+dev-db/firebird             no-lto
+dev-db/mariadb              no-lto
+dev-db/mongodb              no-ipapta   # ICE with -fipa-pta
+dev-db/mysql-connector-c    no-lto      # required to compiled mysql-connector-c # SIGABRT during compile if not used
+dev-db/postgresql           no-ipapta   # Test failure
+dev-haskell/*               fat-lto     #This is so non-portage GHC compilations work, as GHC is oblivious to LTO.  portage builds are fine.
+dev-java/icedtea            no-lto
+<dev-java/openjdk-14        no-lto      # Issue #204, undefined references with LTO.
+dev-lang/duktape            no-ipapta   # fixes polkit from musl overlay not starting
+dev-lang/erlang             no-lto      # Starting with Erlang 24.0, yeccparser.erl: internal error in pass beam_kernel_to_ssa
+dev-lang/gnat-gpl           no-ipapta
+dev-lang/lua                no-lto      # Causes issues building packages like neovim and awesomewm, fixes #772
+dev-lang/moarvm             fat-lto     # required for perl6 (i.e., dev-lang/nqp and dev-lang/rakudo to build)
+dev-lang/mono               no-lto
+dev-lang/ocaml              no-ipapta   # ICE during IPA pass: pta in lto1: Segmentation fault
+dev-lang/perl               no-lto
+dev-lang/php                no-ipapta no-lto # Segfaults when compiled with -fipa-pta # lto-wrapper link failure / https://github.com/InBetweenNames/gentooLTO/issues/135
+dev-lang/R                  no-ipapta   # during IPA pass: pta lto1: internal compiler error: Segmentation fault
+dev-lang/ruby               no-lto      # *FLAGS+=-fno-strict-aliasing # No build or runtime failures, but recommended by the package to avoid incorrect optimizations # Test failure
+dev-lang/rust               no-lto
+dev-lang/spidermonkey       no-ipapta no-lto # Segfault during build with GCC 10.2.0
+#dev-lang/swi-prolog         CMAKE_MAKEFILE_GENERATOR=emake
+dev-libs/elfutils           no-lto
+dev-libs/folks              no-lto      # Programs which depend on folks fail to launch, https://gitlab.gnome.org/GNOME/folks/-/issues/123
+>=dev-libs/gjs-1.66.1       no-lto      # generates general protection fault when starting up gnome
+dev-libs/intel-neo          no-lto      # error: violates the C++ One Definition Rule [-Werror=odr]
+dev-libs/libaio             no-lto      # Issue #314, missing symbols in LTO build compared to non-LTO build, leads to problems with sys-fs/lvm2
+dev-libs/libbpf             no-lto      # lto-wrapper link failure
+dev-libs/libbsd             no-lto      # Undefined symbol error when building mail-client/mailx
+dev-libs/libpcre            no-lto      # Test failure
+dev-libs/libsigsegv         no-lto      # Issue #189
+dev-libs/nss                no-plt
+dev-libs/protobuf           no-ipapta no-lto # Upstream bug https://github.com/protocolbuffers/protobuf/issues/4958 # Test failure
+dev-libs/rocr-runtime       no-lto      # Causes crashes in multiple OpenCL tools
+dev-libs/weston             no-lto
+dev-lisp/clisp              no-lto      # *FLAGS+=-falign-functions # Issue #128.  Function alignment problem.
+dev-lisp/sbcl               no-ipapta   #ICE on -fipa-pta
+dev-python/libvirt-python   no-ipapta no-lto # ICE with GCC 10.2.0
+dev-qt/qtgui                no-ipapta   # Same problem as above
+dev-qt/qtscript             no-lto      #LTO patch exists, but crashes on newer Qt versions.  Needs to be updated.
+dev-qt/qtwebkit             no-ipapta no-lto
+dev-scheme/gambit           no-lto      # Runtime errors when gsc when built with LTO on > GCC 8
+dev-scheme/guile            no-lto      # Issue #193
+dev-scheme/racket           no-ipapta no-lto  # Undefined references and multiple segfaults / violations during build.
+dev-tex/chktex              no-lto      # Segmentation faults as libpcre doesn't get linked-in properly
+dev-util/cargo-c            fat-lto     # fails to link against ssh functions without
+dev-util/cargo              fat-lto     # fails to link against git2 functions without
+dev-util/colm               no-lto      # NOLAFILEREMOVE=true # See issue 690 and https://bugs.gentoo.org/766210
+dev-util/github-cli         no-lto
+dev-util/perf               no-lto
+dev-util/radare2            no-lto      # ICE in IPA pass
+dev-util/sccache            fat-lto     # fails to link
+dev-util/valgrind           no-lto
+dev-vcs/cvs                 no-lto      # Undefined references
+>=dev-vcs/git-2.32.0        no-ipapta   # Segfault in git fetch with GCC < 11.3.0
+games-action/extreme-tuxracer           no-lto
+#games-arcade/supertux                   CMAKE_MAKEFILE_GENERATOR=emake
+games-emulation/mupen64plus-libretro    no-lto
+games-emulation/parallel-n64-libretro   no-lto
+games-fps/gzdoom            no-lto      # Assertion `Class != nullptr' failed. SIGABRT
+games-fps/zandronum         no-lto      # Can't read wads properly with LTO
+gnome-base/gnome-keyring    no-lto
+gnustep-base/gnustep-make   no-lto      # Issue #581, tools to build gnustep-base/gnustep-base, if built with LTO doesn't build gnustep code
+kde-apps/dolphin            as-need     # *FLAGS-="-Wl,--as-needed" # ( https://github.com/InBetweenNames/gentooLTO/issues/50 )
+kde-apps/kdenlive           no-lto
+kde-frameworks/kjs          no-lto      # Issue #181
+mail-client/thunderbird     no-ipapta   # ICE with GCC 10.2.0 (seen with thunderbird 68.12.0)
+mail-filter/procmail        no-lto      # Causes compile to hang indefinitely
+media-gfx/shotwell          no-lto      # Library search error with LTO enabled
+media-libs/alsa-lib         no-lto
+media-libs/dav1d            no-lto      # Starting with GCC 11.1.0, various undefined reference errors during linking
+media-libs/ilmbase          no-lto      # *FLAGS+=-lrt # needed for linker to build media-libs/openexr with LTO
+media-libs/libvpx           fat-lto     # Test failure
+media-libs/libwebp          no-ipapta   # no compilation issues, but -fipa-pta causes webp images to be displayed incorrectly
+media-libs/mesa             no-ipapta no-lto # "has video_cards_i965 ${IUSE//+} && use video_cards_i965 && FlagSubAllFlags -flto*" # Segfault with vulkan
+media-libs/mlt              no-lto
+#media-libs/musicbrainz      CMAKE_MAKEFILE_GENERATOR=emake
+media-sound/jack2           no-lto      # segfault in libjack.so.0.1.0 when ANY app trying to use it (breaks everithing built w/ JACK support)
+media-sound/pulseaudio      no-lto
+#media-video/aegisub        no-lto      # NOLDADD=1 C*FLAGS-="-Wl,*" # does not build when -Wl linker flags are passed to the compiler through C*FLAGS
+media-video/ffmpeg          no-ipapta-plt  no-lto # Test failure #NOTE: Depending on your CPUFLAGS this may work with LTO.  The SSE intrinsics seem to cause problems in some cases. Only x86 requires workaround
+media-video/mplayer         no-lto
+net-analyzer/wireshark      no-lto      # Segfaults trying to load GUI on QT5, see issue 746
+net-libs/nodejs             no-lto      # LTO is controlled by a USE flag; currently won't build with LTO and GCC 11
+net-libs/quiche             fat-lto     # relocation R_X86_64_PC32 against undefined hidden symbol `GFp_ia32cap_P' can not be used when making a shared object
+net-libs/webkit-gtk         no-lto
+net-mail/mailutils          no-lto      # "has ldap ${IUSE//+} && use ldap && FlagAdd LDFLAGS -llber" With LTO, this dependency must be linked in explicitly to resolve undefined reference errors "ber_memvfree" and so on
+net-misc/autossh            no-lto      # Undefined references
+net-misc/dhcp               no-lto      # Cannot be built with LTO by default, but can if "server" USE is disabled
+net-misc/lksctp-tools       no-lto      # function `main': <artificial>:(.text.startup+0x16de): undefined reference to `sctp_connectx'
+net-misc/networkmanager     no-lto      # Test failure
+net-misc/nextcloud-client   no-lto      # Segfaults at start with libQt5Core.so
+net-misc/nx                 no-lto      # ODR violation during compilation
+net-misc/openssh            no-lto      # hangs on exit with lto
+net-news/newsboat           no-lto      # Fails to build with LTO
+net-news/rssguard           no-lto      # https://bugreports.qt.io/browse/QTBUG-41301 and https://github.com/martinrotter/rssguard/issues/156
+net-p2p/cpuminer-opt        no-lto
+net-p2p/monero              no-ipapta   # ICE with -fipa-pta
+net-p2p/retroshare          no-lto      # Issue #129, ICE on amd64
+net-proxy/privoxy           no-lto      #Issue #145, service will not start when built with LTO
+net-wireless/aircrack-ng    no-lto
+sci-electronics/kicad       no-lto      # Issue #168
+sci-libs/arrayfire          no-lto
+sci-libs/mpir               fat-lto     # compilation error without fat LTO (not linking error)
+sci-libs/scipy              no-lto
+sci-libs/tensorflow         no-lto      # Issue #432 tensorflow-estimator fails with missing symbol __cpu_model
+sci-misc/boinc              no-lto      # buffer overflow when starting boinc_client
+sys-apps/acl                no-lto      # Issue #209, builds fine but we cannot set any acl value using the program.
+sys-apps/apparmor           no-lto      # Issue #299, ODR violation, still builds and runs on some configurations
+>=sys-apps/attr-2.4.48      no-lto      # Issue #268, causes segfaults all over the system
+sys-apps/bat                fat-lto     # fails to link against git2 functions
+sys-apps/exa                fat-lto     # fails to link against git2 functions
+sys-apps/fakechroot         no-lto      # "Cgraph edge statement index out of range" error when linking with LTO enabled
+sys-apps/fwupd              no-lto      # Issue #225, LTO causes runtime failures
+=sys-apps/gawk-4.1.4        no-ipapta   # during IPA pass: pta lto1: internal compiler error: Segmentation fault
+sys-apps/man-db             no-lto      # Issue #403, LTO causes runtime failures
+sys-apps/nix                no-lto      # Issue #222, LTO causes runtime failures
+sys-apps/sandbox            no-lto      # Issue #347, LTO breaks basic sandboxing functionality
+sys-boot/syslinux           fat-lto     #Requires ld.bfd
+sys-cluster/ceph            no-lto      # linking error during compilation
+sys-cluster/glusterfs       no-lto      # undefined reference to `glfs_subvol_done'
+sys-devel/clang             no-ipapta no-lto # Test failure # Issue #619 Same as above
+sys-devel/gcc               no-ipapta
+sys-devel/gdb               no-lto
+sys-devel/gettext           no-lto      # *FLAGS+=-lm # needed for linker to resolve libm's log10 -- only needed for LTO
+sys-devel/llvm              no-lto      # Issue #619 temporarily disabled for now due to build errors
+sys-fabric/libibverbs       no-lto      # Issue #506, Undefined references
+sys-fs/cryfs                no-lto      # Test failure
+sys-fs/fuse-common          no-lto
+sys-fs/fuse                 no-lto      # Issue #139 and #142, it appears the symbol __fuse_read_cmd goes missing if LTO is enabled, causing linking problems on some systems.  Using gold seems to help.
+sys-libs/compiler-rt-sanitizers no-plt no-lto  # *FLAGS+=-Wno-unused-command-line-argument # Test failure
+=sys-libs/efivar-37 lto-partition-none  # FLAGS+="-flto-partition=none"
+#sys-libs/glibc             no-plt no-lto #When using prelink, will cause a bunch of segfaults. #Alternative: no-fat-lto no-ipapta Fails in configure stage with LTO enabled, checking for builtin redirect.  With -ffat-lto-objects, and no -fipa-pta, we get further, but get multiple definition errors  Forcing past that yields undefined symbol errors.
+sys-libs/libapparmor        no-lto      # Undefined symbol error when trying to compile sys-apps/apparmor
+sys-libs/libcxxabi          no-lto      # /var/tmp/portage/sys-libs/libcxxabi-4.0.1/temp/ccXYODmk.ltrans0.ltrans.o:<artificial>:DW.ref.__gcc_personality_v0: error: undefined reference to '__gcc_personality_v0'
+sys-libs/libomp             no-lto      # Issue #619 libomp-11.0.0_rc4 fails to build with LTO
+sys-libs/libosinfo          fat-lto     # Causes virt-manager to segfault when opening VM window. May be related to GCC 11. Seen with 1.9.0
+sys-libs/libselinux         no-lto
+sys-libs/libsemanage        no-lto
+sys-libs/libsepol           no-lto
+sys-libs/libxcrypt          no-lto      # Undefined symbols in library files cause dependencies like net-misc/whois to fail to build
+sys-libs/musl               no-lto
+sys-libs/ncurses-compat     no-lto      # *FLAGS-=-Wl,--as-needed *FLAGS+=-ldl # checking whether able to link to dl*() functions... configure: error: Cannot link test program for libdl (#111)
+sys-libs/ncurses            no-lto      # *FLAGS-=-Wl,--as-needed *FLAGS+=-ldl # checking whether able to link to dl*() functions... configure: error: Cannot link test program for libdl (#111)
+sys-power/nut               fat-lto     # fails during configure otherwise
+sys-power/thermald          no-lto      # *FLAGS+=-Wl,--no-fatal-warnings *FLAGS+=-Wno-error
+sys-process/criu            no-graphite no-lto # Fewer settings may be possible. Needs testing. (Dependency of LXC.)
+sys-process/numactl         no-lto      # Undefined references
+www-apps/hugo               no-lto
+www-client/firefox          no-ipapta   #ICE on -fipa-pta
+www-client/torbrowser       no-ipapta   #ICE on -fipa-pta
+www-misc/shellinabox        no-lto
+x11-base/xorg-server        no-plt no-lto # Undefined symbol in i956 driver # linking error during compilation
+x11-base/xwayland           no-ipapta   # SIGABRT when querying for GLX information
+x11-drivers/xf86-video-intel no-lto
+#x11-libs/wxGTK             no-lto      # NOLDADD=1 C*FLAGS-="-Wl,*" # Issue #40, does not build when -Wl linker flags are passed to the compiler through C*FLAGS
+#x11-misc/polybar            CMAKE_MAKEFILE_GENERATOR=emake
+x11-terms/alacritty         fat-lto
+x11-wm/bspwm                no-ipapta   # needed for version 0.9.7 on 17.0 profile running the testing branch everywhere with GCC 8.3.0

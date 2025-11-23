@@ -1,0 +1,3 @@
+# https://github.com/bsd-ac/wayland-desktop
+# https://wiki.gentoo.org/wiki/Wayland_Desktop_Landscape
+*/*::wayland-desktop ~amd64

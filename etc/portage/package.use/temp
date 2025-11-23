@@ -1,0 +1,10 @@
+#media-libs/tiff -webp
+#net-dns/avahi -gtk
+#media-video/ffmpeg -sdl
+#media-libs/libsndfile minimal
+#media-fonts/liberation-fonts -fontforge
+#app-arch/libarchive -lz4
+
+# Для Steam
+#sys-libs/ncurses -gpm
+#media-libs/mesa -vaapi

@@ -1,0 +1,1 @@
+#sys-libs/glibc no-plt no-lto  #visibility # no-plt-lto-seminterops

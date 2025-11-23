@@ -1,0 +1,3 @@
+dev-lisp/sbcl htmldoc infodoc pax-kernel source threads unicode doc
+#dev-lisp/asdf doc
+dev-util/strace aio
