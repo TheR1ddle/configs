@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=conky
+Exec=sh -c "sleep 10s && $HOME/.config/conky/run_conky.sh"
+StartupNotify=false
+Terminal=false
+Icon=conky-logomark-violet
+Categories=System;Monitor;
